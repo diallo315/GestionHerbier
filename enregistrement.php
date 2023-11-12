@@ -58,7 +58,7 @@
         <div class="col-md-12">
             <div class="card co h-100">
                 <div class="card-header">
-                    <h1 class="text-center">Détails des Enregistrements sur la menace <p class><?php echo $donneesMenaceNom['nomMenace'];?></p></h1>
+                    <h1 class="text-center">Détails des Enregistrements sur la menace <p style="color:green;"><?php echo $donneesMenaceNom['nomMenace'];?></p></h1>
                     <a href="ajout.php?id=<?php echo $_GET['id'];?>&ID=<?php echo $_GET['ID']; ?>" class="btn btn-outline-primary float-end mb-3">Ajouter un enregistrement</a>
                     <a href="classe_menace.php?id=<?php echo $_GET['ID']; ?>" class="btn btn-outline-danger float-start mb-5">Retour</a> 
                 </div>

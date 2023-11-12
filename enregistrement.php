@@ -1,3 +1,4 @@
+
 <?php 
  session_start();
     try{
@@ -6,6 +7,12 @@
 	  catch(Exception $e){
 		die('ERREUR : ' .$e->getMessage());
 	  }
+     if($_SERVER['REQUEST_METHOD']==='GET')
+     {
+          $donneesMenaces=$bdd->prepare('SELECT * FROM classemenace WHERE idMenace=?');
+          $donneesMenaces->execute(array($_GET['id']));
+          $donneesMenaceNom=$donneesMenaces->fetch();
+     }
 	 
 ?>
 
@@ -49,9 +56,9 @@
         <div class="col-md-12">
             <div class="card co h-100">
                 <div class="card-header">
-                    <h1 class="text-center">Détails des Enregistrements</h1>
-                    <a href="ajout.php?id=<?php echo $_GET['id'];?>&ID=<?php echo $_GET['ID'];?>" class="btn btn-outline-primary float-end mb-3">Ajouter un enregistrement</a>
-                    <a href="classe_menace.php?id=<?php echo $_GET['ID'];?>" class="btn btn-outline-danger float-start mb-5">Retour</a> 
+                    <h1 class="text-center">Détails des Enregistrements sur la menace <p class><?php echo $donneesMenaceNom['nomMenace'];?></p></h1>
+                    <a href="ajout.php?id=<?php echo $_GET['id'];?>&ID=<?php echo $_GET['ID']; ?>" class="btn btn-outline-primary float-end mb-3">Ajouter un enregistrement</a>
+                    <a href="classe_menace.php?id=<?php echo $_GET['ID']; ?>" class="btn btn-outline-danger float-start mb-5">Retour</a> 
                 </div>
                 <form method="GET" class="form-inline my-2 my-lg-3 mt-2">
                     <div class="d-flex">
@@ -59,7 +66,7 @@
                         <button class="btn btn-outline-success m-1" type="submit">Recherche</button>
                     </div>
                 </form>
-                <div class="card-body mt-3">
+                <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered border-primary table-sm">
                             <thead class="text-center">
@@ -79,8 +86,7 @@
                             <tbody>
                                 <!-- ajouter les données -->
                                 <?php
-                                    $donnees=$bdd->prepare('SELECT *FROM enregistrement WHERE idMenace=?');
-                                    $donnees->execute(array($_GET['id']));
+                                    $donnees=$bdd->query('select * from enregistrement');
                                     while ($reponse = $donnees->fetch())
                                     {?>  
                                         <tr>
@@ -88,13 +94,13 @@
                                             <th><p class="card-text"><?php echo $reponse['nomClasse2']; ?></p></th>
                                             <th><p class="card-text"><?php echo $reponse['zone']; ?></p></th>
                                             <th><p class="card-text"><?php echo $reponse['dateEnregistrement']; ?></p></th>
-                                            <th><p class="card-text"><?php echo $reponse['coordonnees']; ?></p></th>
+                                            <th><p class="card-text"><?php echo $reponse['habitat']; ?></p></th>
                                             <th><p class="card-text"><?php echo $reponse['habitat']; ?></p></th>
                                             <th><p class="card-text"><?php echo $reponse['descriptionActivite']; ?></p></th>
                                             <th><p class="card-text"><?php echo $reponse['niveauImpact']; ?></p></th>
                                             <th><p class="card-text"><?php echo $reponse['mesureAttenuation']; ?></p></th>
-                                            <th><a href="modification_enregistrement.php?id=<?php echo $reponse['idEnregistrement']; ?>" class="btn btn-outline-primary"><i class="fas fa-edit fa-sm"></i></a>
-                                            <a href="supprimer_enreg.php?id=<?php echo $reponse['idEnregistrement']; ?>" class="btn btn-outline-danger"><i class="fas fa-trash fa-sm"></i></th>
+                                            <th><a href="modification.php?idE=<?php echo $reponse['idEnregistrement']; ?>&id=<?php echo $_GET['id']; ?>&ID=<?php echo $_GET['ID']; ?>" class="btn btn-outline-primary"><i class="fas fa-edit fa-sm"></i></a>
+                                           <a href="supprimer_enreg.php?idE=<?php echo $reponse['idEnregistrement']; ?>&id=<?php echo $_GET['id']; ?>&ID=<?php echo $_GET['ID']; ?>" class="btn btn-outline-danger"><i class="fas fa-trash fa-sm"></i></a></th>
                                         </tr>
                                 <?php
                                     }

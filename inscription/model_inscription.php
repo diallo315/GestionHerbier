@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["idProfil"] = $row["idProfil"];
                 $_SESSION["mailProfil"] = $row["mailProfil"];
                 header("Location: ../index.php");
-                exit(); // N'oubliez pas de terminer le script après une redirection header
+                exit(); 
             } else {
                 echo "Mot de passe incorrect";
                 header("location: mode_inscription.php");

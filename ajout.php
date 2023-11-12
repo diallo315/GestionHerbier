@@ -30,9 +30,7 @@ $req = $bdd->prepare('INSERT INTO enregistrement(idMenace,nomClasse1,nomClasse2,
             'descriptionActivite' => $_POST['description_activites'],
             'mesureAttenuation' => $_POST['mesures_attenuations']
         ));
-		if (!$req) {
-           print_r($req->errorInfo());
-    }
+		
 		
 	 }else {
     // Gérez l'erreur de date invalide ici

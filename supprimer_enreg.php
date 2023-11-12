@@ -9,17 +9,13 @@ try {
 }
 
 // Assurez-vous que les paramètres d'URL sont des entiers
-$idE = $_GET['idE'];
+$idE = $_GET['idE'] ? intval($_GET['idE']) : 0;
 
 // Supprimez l'enregistrement
 $req = $bdd->prepare('DELETE FROM enregistrement WHERE idEnregistrement = ?');
 $req->execute(array($idE));
 
 // Vérifiez s'il y a des erreurs lors de l'exécution de la requête
-if (!$req) {
-    print_r($req->errorInfo());
-    exit(); // Arrêtez l'exécution du script si une erreur est survenue
-}
 
 // Conservez le paramètre 'ID' dans la redirection
 $id=$_GET['id'];

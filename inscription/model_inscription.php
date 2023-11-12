@@ -1,47 +1,3 @@
-<?php
-session_start(); // Démarrez la session avant d'accéder aux variables de session
-
-try {
-    $bdd = new PDO('mysql:host=localhost;dbname=herbier_db', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-} catch (Exception $e) {
-    die('ERREUR : ' . $e->getMessage());
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["mail"]) && isset($_POST["password"])) {
-        $mail = $_POST["mail"];
-        $password = $_POST["password"];
-
-        $query = "SELECT * FROM profil WHERE email = :mailProfil AND passwordProfil = :passwordProfil";
-        $stmt = $bdd->prepare($query);
-        $stmt->bindParam(":mailProfil", $mail);
-        $stmt->bindParam(":passwordProfil", $password);
-        $stmt->execute();
-
-        if ($stmt->rowCount() > 0) {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            if (password_verify($password, $row["passwordProfil"])) {
-                $_SESSION["idProfil"] = $row["idProfil"];
-                $_SESSION["mailProfil"] = $row["mailProfil"];
-                header("Location: ../index.php");
-                exit(); 
-            } else {
-                echo "Mot de passe incorrect";
-                header("location: mode_inscription.php");
-                exit();
-            }
-        } else {
-            echo "Aucun utilisateur trouvé avec cet e-mail";
-            header("location: model_inscription.php");
-              exit();
-        }
-    } else {
-        echo "Veuillez remplir tous les champs du formulaire";
-        header("Location: model_inscription.php");
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -85,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="cont_img_back_">
           <img src="images/image1.jpg" alt="" />
           </div>
-    <form action="" metho="post">
+    <form action="process_admin_login.php" metho="post">
     <div class="cont_form_login">
     <a href="#" onclick="hidden_login_and_sign_up()" ><i class="material-icons">&#xE5C4;</i></a>
       <h2>ADMINISTRATEUR</h2>
@@ -94,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button type="submit" class="btn_login" onclick="change_to_login()">CONNEXION</button>
       </div>
     </form>
-      <form action="" method="post">    
+      <form action="process_agent_login.php" method="post">    
         <div class="cont_form_sign_up">
           <a href="#" onclick="hidden_login_and_sign_up()"><i class="material-icons mb-10">&#xE5C4;</i></a>
           <h2 style="margin-bottom: 0px; padding-top: 80px">AGENT DE TERRAIN</h2>

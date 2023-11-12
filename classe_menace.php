@@ -20,15 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<!-- Le reste du code HTML reste inchangé -->
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -86,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      <h1 class="text-center">Liste de classe Menaces</h1>
      </div>
   <?php 
-     $donnees=$bdd->prepare('SELECT * FROM classemenace WHERE idProtege=?');
+  $donnees=$bdd->prepare('SELECT * FROM classemenace WHERE idProtege=?');
 	 $donnees->execute(array($_GET['id']));
 	 while($reponse=$donnees->fetch())	 
 	 {

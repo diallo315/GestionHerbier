@@ -36,6 +36,8 @@
             width: 100%;
         }
 
+
+
         th, td {
             font-size: 12px; /* Ajustez la taille de la police selon vos besoins */
         }
@@ -84,9 +86,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- ajouter les données -->
+                            
                                 <?php
-                                    $donnees=$bdd->query('select * from enregistrement');
+                                    $donnees=$bdd->prepare('SELECT * FROM enregistrement WHERE idEnregistrement=?');
+                                    $donnees->execute(array($_GET['id']));
                                     while ($reponse = $donnees->fetch())
                                     {?>  
                                         <tr>

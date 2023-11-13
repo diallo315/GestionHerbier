@@ -7,9 +7,13 @@
 	  catch(Exception $e){
 		die('ERREUR : ' .$e->getMessage());
 	  }
-	 
-      $donnees=$bdd->prepare('SELECT * FROM enregistrement WHERE idMenace=?');
-    $donnees->execute(array($_GET['id']));
+      if($_SERVER['REQUEST_METHOD']==='GET')
+      {
+           $donneesMenaces=$bdd->prepare('SELECT * FROM classemenace WHERE idMenace=?');
+           $donneesMenaces->execute(array($_GET['id']));
+           $donneesMenaceNom=$donneesMenaces->fetch();
+      }
+     
 ?>
 
 
@@ -52,7 +56,7 @@
         <div class="col-md-12">
             <div class="card co h-100">
                 <div class="card-header">
-                    <h1 class="text-center">Détails des Enregistrements de la classe menaces</h1>
+                    <h1 class="text-center">Détails des Enregistrements sur la menace <p style="color:green;"><?php echo $donneesMenaceNom['nomMenace'];?></h1>
                     <a href="ajout.php?id=<?php echo $_GET['id'];?>&ID=<?php echo $_GET['ID']; ?>" class="btn btn-outline-primary float-end mb-3">Ajouter un enregistrement</a>
                     <a href="classe_menace.php?id=<?php echo $_GET['ID'];?>&id=<?php echo $_GET['ID']; ?>" class="btn btn-outline-danger float-start mb-5">Retour</a> 
                 </div>
@@ -81,7 +85,9 @@
                             </thead>
                             <tbody>
                                 <!-- ajouter les données -->
-                                <?php
+                                    <?php $donnees=$bdd->prepare('SELECT * FROM enregistrement WHERE idMenace=?');
+                                    $donnees->execute(array($_GET['id']));
+
                                     while ($reponse = $donnees->fetch())
                                     {?>  
                                         <tr>

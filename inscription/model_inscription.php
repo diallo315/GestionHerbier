@@ -41,12 +41,12 @@
         <div class="cont_img_back_">
           <img src="images/image1.jpg" alt="" />
           </div>
-    <form action="process_admin_login.php" metho="post">
+    <form action="process_admin_login.php" method="post">
     <div class="cont_form_login">
     <a href="#" onclick="hidden_login_and_sign_up()" ><i class="material-icons">&#xE5C4;</i></a>
       <h2>ADMINISTRATEUR</h2>
-        <input type="mail" placeholder="Exemple12@gmail.com" name="mail"/>
-        <input type="password" placeholder="Password" name="password"/>
+        <input type="email" placeholder="Exemple12@gmail.com" name="mail"/>
+        <input type="password" placeholder="Password" name="pass"/>
         <button type="submit" class="btn_login" onclick="change_to_login()">CONNEXION</button>
       </div>
     </form>

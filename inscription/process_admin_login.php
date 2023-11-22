@@ -1,42 +1,28 @@
 <?php
 session_start();
+error_reporting(E_ALL);
+ini_set("display_errors",1);
+ 
+try {
+    $bdd = new PDO('mysql:host=localhost;dbname=herbier_db', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+} catch (Exception $e) {
+    die('ERREUR : ' . $e->getMessage());
+}
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["mail"]) && isset($_POST["password"])) {
-        $mail = $_POST["mail"];
-        $password = $_POST["password"];
-
-        // Connect to the database
-        try {
-            $bdd = new PDO('mysql:host=localhost;dbname=herbier_db', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-        } catch (Exception $e) {
-            die('ERREUR : ' . $e->getMessage());
+if (isset($_POST['mail']) && isset($_POST['pass'])) {
+    $pass_hache = sha1('gz' . $_POST['pass']);
+    $req = $bdd->query('SELECT * FROM agents');
+    while ($donnees = $req->fetch()) {
+        if ($pass_hache == $donnees['mot_pass'] && $_POST['mail'] == $donnees['email']) {
+            $_SESSION['nom'] = $donnees['nom'];
+            $_SESSION['prenom'] = $donnees['prenom'];
+            $_SESSION['id_user'] = $donnees['id_utilisateur'];
+            header("Location: ../index.php");
+            exit;
         }
-
-        $query = "SELECT * FROM profil WHERE email = :mailProfil";
-        $stmt = $bdd->prepare($query);
-        $stmt->bindParam(":mailProfil", $mail);
-        $stmt->execute();
-
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            if (password_verify($password, $row['passwordProfil'])) {
-                $_SESSION['mail'] = $row['email']; // assuming 'email' is the correct column name
-                header('location: ../index.php');
-                exit();
-            } else {
-                echo "Mot de passe incorrect";
-                header("Location: model_inscription.php");
-                exit();
-            }
-        }
-
-        echo "Aucun utilisateur trouvé avec cet e-mail";
-        header("Location: model_inscription.php");
-        exit();
-    } else {
-        echo "Veuillez remplir tous les champs du formulaire";
-        header("Location: model_inscription.php");
-        exit();
     }
+    echo "Identifiants incorrects";
+}else{ echo"Certains index ne sont pas definis dans\$_POST.";
+
 }
 ?>
